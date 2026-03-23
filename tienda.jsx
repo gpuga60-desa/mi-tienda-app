@@ -16,8 +16,28 @@ const analytics = getAnalytics(app);
 
 const KEYS = { products: "inv_products", sales: "inv_sales" };
 const store = {
-  async get(k) { try { const r = await window.storage.get(k); return r ? JSON.parse(r.value) : null; } catch { return null; } },
-  async set(k, v) { try { await window.storage.set(k, JSON.stringify(v)); } catch(e) { console.error(e); } }
+  async get(k) {
+    try {
+      // Buscamos en la colección 'tienda_data' el documento con el nombre de la llave (k)
+      const docRef = doc(db, "tienda_data", k);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return docSnap.data().value;
+      }
+      return null;
+    } catch (e) {
+      console.error("Error al leer de Firebase:", e);
+      return null;
+    }
+  },
+  async set(k, v) {
+    try {
+      // Guardamos el valor 'v' dentro de un objeto en Firebase
+      await setDoc(doc(db, "tienda_data", k), { value: v });
+    } catch (e) {
+      console.error("Error al guardar en Firebase:", e);
+    }
+  }
 };
 const uid = () => Math.random().toString(36).slice(2, 9);
 const fmt = (n) => new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP", minimumFractionDigits: 0 }).format(Number(n) || 0);
