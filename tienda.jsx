@@ -1,4 +1,18 @@
 import { useState, useEffect } from "react";
+import { initializeApp } from "firebase/app";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAJ5n8lVEMD6LQNZVsHbY_d8HhP96OlKWY",
+  authDomain: "tiny-shop-a5895.firebaseapp.com",
+  projectId: "tiny-shop-a5895",
+  storageBucket: "tiny-shop-a5895.firebasestorage.app",
+  messagingSenderId: "465448854657",
+  appId: "1:465448854657:web:e4f6b9369c02b94d3a9980"
+};
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 const KEYS = { products: "inv_products", sales: "inv_sales" };
 const store = {
